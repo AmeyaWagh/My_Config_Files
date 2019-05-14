@@ -6,7 +6,6 @@ GREEN='\033[0;32m'
 ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
-shellFlag=1
 ENABLE_CUDA=true
 ENABLE_NVIDIA=true
 ENABLE_IHMC=true
@@ -24,7 +23,6 @@ fi
 source_shell(){
     if [[ "$(ps -p $$)" == *"bash"* ]]; then
         echo "${GREEN} [$(date)] ${NC}Bash was sourced"
-        shellFlag=1
     elif [[ "$(ps -p $$)" == *"zsh"* ]];then 
         echo "${GREEN} [$(date)] ${NC} Zsh was sourced"
     else
@@ -76,6 +74,7 @@ alias showgpu='watch nvidia-smi'
 alias source_conda='export PATH="/home/ameya/anaconda3/bin:$PATH"'
 alias check_internet_speed='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
 alias sourceBUZZ="export BUZZ_INCLUDE_PATH=/usr/local/share/buzz"
+alias localIP="ifconfig wlp61s0 | grep \"inet addr\" | awk '{print $2 }'"
 
 #------------- CUDA paths -------------------#
 if [ "$ENABLE_CUDA" = true ]; then
