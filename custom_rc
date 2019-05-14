@@ -1,0 +1,119 @@
+#!/bin/sh
+
+RED='\033[0;31m'
+BLACK='\033[0;30m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+NC='\033[0m' # No Color
+
+shellFlag=1
+ENABLE_CUDA=true
+ENABLE_NVIDIA=true
+ENABLE_IHMC=true
+ENABLE_CAFFE=true
+ENABLE_VIRTUAL_ENV=true
+
+if [[ "$(ps -p $$)" == *"bash"* ]]; then
+    SHELL_NAME="BASH"
+elif [[ "$(ps -p $$)" == *"zsh"* ]];then 
+    SHELL_NAME="ZSH"
+else
+    SHELL_NAME="UNKNOWN"
+fi
+
+source_shell(){
+    if [[ "$(ps -p $$)" == *"bash"* ]]; then
+        echo "${GREEN} [$(date)] ${NC}Bash was sourced"
+        shellFlag=1
+    elif [[ "$(ps -p $$)" == *"zsh"* ]];then 
+        echo "${GREEN} [$(date)] ${NC} Zsh was sourced"
+    else
+        echo "WTF! Dude which SHELL do you use?"
+        echo "$0"
+    fi
+}
+alias sourceshell='source_shell'
+ 
+
+
+sourceROS(){
+    source /opt/ros/kinetic/setup.zsh   
+    source $HOME/pcl_ws/devel/setup.zsh
+    # echo "${GREEN}[ROS STATUS]${NC}    ROS $ROS_DISTRO->SOURCED"
+    ROS_banner 
+}
+
+ROS_banner(){
+ros_logo="
+${GREEN}[ROS MASTER]${NC}    $ROS_MASTER_URI     
+${GREEN}[ROS ROOT]${NC}      $ROS_ROOT     
+${GREEN}[ROS DISTRO]${NC}    $ROS_DISTRO
+" 
+echo $ros_logo
+}
+
+
+welcomeBanner(){
+    clear
+#    myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+logo="
+    ___    __  ___________  _____ 
+   /   |  /  |/  / ____/\ \/ /   |  ${GREEN}[HOSTNAME]${NC}      $HOST
+  / /| | / /|_/ / __/    \  / /| |  ${GREEN}[DATETIME]${NC}      $(date)
+ / ___ |/ /  / / /___    / / ___ |  ${GREEN}[SHELL]${NC}         $SHELL_NAME
+/_/  |_/_/  /_/_____/   /_/_/  |_|  
+
+"
+echo $logo
+}
+
+
+#-------- common aliases ------------#
+alias syssuspend='systemctl suspend -i'
+alias startftp='python3 -m http.server'
+alias committree='git log --oneline --graph --color --all --decorate'
+alias showgpu='watch nvidia-smi'
+alias source_conda='export PATH="/home/ameya/anaconda3/bin:$PATH"'
+alias check_internet_speed='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+alias sourceBUZZ="export BUZZ_INCLUDE_PATH=/usr/local/share/buzz"
+
+#------------- CUDA paths -------------------#
+if [ "$ENABLE_CUDA" = true ]; then
+	export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+	export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
+fi
+#------------ -Virtual Env ------------------#
+if [ "$ENABLE_VIRTUAL_ENV" = true ]; then
+	export WORKON_HOME=/home/ameya/.virtualenvs
+	export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+	source /usr/local/bin/virtualenvwrapper.sh
+fi
+
+#------------ -Caffe Path ------------------#
+if [ "$ENABLE_CAFFE" = true ]; then
+	export WORKON_HOME=/home/ameya/.virtualenvs
+	export PYTHONPATH=/usr/local:$PYTHONPATH
+	export PYTHONPATH=$PYTHONPATH:/home/ameya/caffe2/build
+fi
+#------------ LD LIBRARY PATH ------------------#
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/pulse
+
+#------------ -IHMC JAVA ------------------#
+if [ "$ENABLE_IHMC" = true ]; then
+	export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+	export IHMC_SOURCE_LOCATION=~/mydata/repository-group/ihmc-open-robotics-software
+fi
+
+#------------ -NVIDIA GPU PATH ------------------#
+if [ "$ENABLE_NVIDIA" = true ]; then
+	export NVIDIA_BIN="/usr/lib/nvidia-384/bin"
+	export NVIDIA_LIB="/usr/lib/nvidia-384"
+	export NVIDIA_LIB32="/usr/lib32/nvidia-384"
+fi
+
+
+
+#-------- shell wise aliases ---------#
+welcomeBanner
+
