@@ -8,7 +8,7 @@ set laststatus=2
 set t_Co=256
 set number
 let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-au BufNewFile,BufRead *.py
+au BufNewFile,BufRead \*.py
     \ set tabstop=4
     \ set softtabstop=4
     \ set shiftwidth=4
@@ -16,7 +16,7 @@ au BufNewFile,BufRead *.py
     \ set expandtab
     \ set autoindent
     \ set fileformat=unix
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -36,9 +36,9 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif 
+let g:NERDTreeDirArrowExpandable = '▸' 
+let g:NERDTreeDirArrowCollapsible = '▾' 
 
 "set background=dark
 "colorscheme solarized
