@@ -10,6 +10,17 @@ source <location_of_repo>/custom_rc
 
 
 ## vimrc
+Install pathogen
+```bash
+mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+```
+
+Install Vundle
+```bash
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+
 This file contains my configuration of vim
 Add this file to your `.vimrc` 
 ```bash
